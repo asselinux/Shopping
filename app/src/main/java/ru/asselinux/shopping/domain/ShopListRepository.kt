@@ -1,5 +1,7 @@
 package ru.asselinux.shopping.domain
 
+import androidx.lifecycle.LiveData
+
 interface ShopListRepository {
 
     fun addItem(shopItem: ShopItem)
@@ -10,5 +12,5 @@ interface ShopListRepository {
 
     fun getItem(shopItemId: Int): ShopItem
 
-    fun getList() : List<ShopItem>
+    fun getList() : LiveData<List<ShopItem>>
 }

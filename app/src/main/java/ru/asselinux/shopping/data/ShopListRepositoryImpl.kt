@@ -1,10 +1,13 @@
 package ru.asselinux.shopping.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import ru.asselinux.shopping.domain.ShopItem
 import ru.asselinux.shopping.domain.ShopListRepository
 
 object ShopListRepositoryImpl : ShopListRepository {
 
+    private val shopListLiveData = MutableLiveData<List<ShopItem>>()
     private val shopList = mutableListOf<ShopItem>()
 
     private var autoIncrementId = 0
@@ -14,10 +17,12 @@ object ShopListRepositoryImpl : ShopListRepository {
             shopItem.id = autoIncrementId++
         }
         shopList.add(shopItem)
+        updateList()
     }
 
     override fun deleteItem(shopItem: ShopItem) {
         shopList.remove(shopItem)
+        updateList()
     }
 
     override fun editItem(shopItem: ShopItem) {
@@ -31,7 +36,11 @@ object ShopListRepositoryImpl : ShopListRepository {
             ?: throw RuntimeException("Element with id $shopList not found")
     }
 
-    override fun getList(): List<ShopItem> {
-        return shopList.toList()
+    override fun getList(): LiveData<List<ShopItem>> {
+        return shopListLiveData
+    }
+
+    private fun updateList() {
+        shopListLiveData.value = shopList.toList()
     }
 }
