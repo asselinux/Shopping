@@ -18,11 +18,6 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.shopList.observe(this) {
             Log.d("MainA", it.toString())
-            if(count == 0) {
-                count++
-                val item = it[0]
-                viewModel.changeEnableState(item)
-            }
         }
     }
 }
